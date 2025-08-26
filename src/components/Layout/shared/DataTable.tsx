@@ -47,7 +47,6 @@ export const DataTable = ({
 }: DataTableProps) => {
   return (
     <Box>
-      {/* Filters */}
       {(onSearchChange || onFilterChange) && (
         <HStack spacing={4} mb={6}>
           {onSearchChange && (
@@ -79,7 +78,6 @@ export const DataTable = ({
         </HStack>
       )}
 
-      {/* Table */}
       <TableContainer>
         <Table variant="simple">
           <Thead>
