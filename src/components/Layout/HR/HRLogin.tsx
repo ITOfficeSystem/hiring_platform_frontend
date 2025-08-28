@@ -13,21 +13,21 @@ import {
   InputGroup,
   InputRightElement,
   IconButton,
-} from '@chakra-ui/react';
-import { useState } from 'react';
-import { FaEye, FaEyeSlash, FaUserTie } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { FaEye, FaEyeSlash, FaUserTie } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import {
   Formik,
   Form,
   Field,
   type FieldProps,
   type FormikHelpers,
-} from 'formik';
-import * as Yup from 'yup';
-import { MOCK_HR_USERS } from '../../../constants';
-import { useAuth } from '../../../hooks/useAuth';
-import { FormContainer } from '../shared/FormContainer';
+} from "formik";
+import * as Yup from "yup";
+import { MOCK_HR_USERS } from "../../../constants";
+import { useAuth } from "../../../hooks/useAuth";
+import { FormContainer } from "../shared/FormContainer";
 
 interface LoginForm {
   email: string;
@@ -35,8 +35,8 @@ interface LoginForm {
 }
 
 const validationSchema = Yup.object({
-  email: Yup.string().email('Email is invalid').required('Email is required'),
-  password: Yup.string().required('Password is required'),
+  email: Yup.string().email("Email is invalid").required("Email is required"),
+  password: Yup.string().required("Password is required"),
 });
 
 export const HRLogin = () => {
@@ -46,8 +46,8 @@ export const HRLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const initialValues: LoginForm = {
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   };
 
   const handleSubmit = async (
@@ -68,33 +68,33 @@ export const HRLogin = () => {
         login(user);
 
         toast({
-          title: 'Login Successful!',
+          title: "Login Successful!",
           description: `Welcome back, ${user.name}`,
-          status: 'success',
+          status: "success",
           duration: 3000,
           isClosable: true,
-          position: 'top-right',
+          position: "top-right",
         });
 
-        navigate('/hr/job-space');
+        navigate("/hr/job-space");
       } else {
         toast({
-          title: 'Login Failed',
-          description: 'Invalid email or password',
-          status: 'error',
+          title: "Login Failed",
+          description: "Invalid email or password",
+          status: "error",
           duration: 5000,
           isClosable: true,
-          position: 'top-right',
+          position: "top-right",
         });
       }
     } catch (error) {
       toast({
-        title: 'Login Error',
-        description: 'Something went wrong. Please try again.',
-        status: 'error',
+        title: "Login Error",
+        description: "Something went wrong. Please try again.",
+        status: "error",
         duration: 5000,
         isClosable: true,
-        position: 'top-right',
+        position: "top-right",
       });
     } finally {
       actions.setSubmitting(false);
@@ -141,7 +141,7 @@ export const HRLogin = () => {
         onSubmit={handleSubmit}
       >
         {({ isSubmitting, errors, touched }) => (
-          <Form style={{ width: '100%' }}>
+          <Form style={{ width: "100%" }}>
             <VStack spacing={4}>
               <Field name="email">
                 {({ field }: FieldProps) => (
@@ -171,14 +171,14 @@ export const HRLogin = () => {
                     <InputGroup>
                       <Input
                         {...field}
-                        type={showPassword ? 'text' : 'password'}
+                        type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
                         bg="white"
                       />
                       <InputRightElement>
                         <IconButton
                           aria-label={
-                            showPassword ? 'Hide password' : 'Show password'
+                            showPassword ? "Hide password" : "Show password"
                           }
                           icon={showPassword ? <FaEyeSlash /> : <FaEye />}
                           variant="ghost"

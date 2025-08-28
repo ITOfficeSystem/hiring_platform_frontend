@@ -18,23 +18,23 @@ import {
   TagCloseButton,
   Wrap,
   WrapItem,
-} from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'; // Import useParams
-import { Field, Form, Formik, type FieldProps } from 'formik';
-import * as Yup from 'yup';
-import { useJobs } from '../../../hooks/useJobs'; // Use the new useJobs hook
-import { PageHeader } from '../shared/PageHeader';
-import type { JobFormValues } from '../../../types';
-import { LoadingSpinner } from '../../ui/LoadingSpinner';
-import { ErrorAlert } from '../../ui/ErrorAlert';
+} from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom"; // Import useParams
+import { Field, Form, Formik, type FieldProps } from "formik";
+import * as Yup from "yup";
+import { useJobs } from "../../../hooks/useJobs"; // Use the new useJobs hook
+import { PageHeader } from "../shared/PageHeader";
+import type { JobFormValues } from "../../../types";
+import { LoadingSpinner } from "../../ui/LoadingSpinner";
+import { ErrorAlert } from "../../ui/ErrorAlert";
 
 const validationSchema = Yup.object({
-  title: Yup.string().required('Job title is required'),
-  company: Yup.string().required('Company name is required'),
-  location: Yup.string().required('Location is required'),
-  type: Yup.string().required('Job type is required'),
-  description: Yup.string().required('Job description is required'),
+  title: Yup.string().required("Job title is required"),
+  company: Yup.string().required("Company name is required"),
+  location: Yup.string().required("Location is required"),
+  type: Yup.string().required("Job type is required"),
+  description: Yup.string().required("Job description is required"),
 });
 
 export const JobForm = () => {
@@ -49,9 +49,9 @@ export const JobForm = () => {
   const [formLoading, setFormLoading] = useState(true);
   const [formError, setFormError] = useState<string | null>(null);
 
-  const [requirementInput, setRequirementInput] = useState('');
-  const [responsibilityInput, setResponsibilityInput] = useState('');
-  const [benefitInput, setBenefitInput] = useState('');
+  const [requirementInput, setRequirementInput] = useState("");
+  const [responsibilityInput, setResponsibilityInput] = useState("");
+  const [benefitInput, setBenefitInput] = useState("");
 
   useEffect(() => {
     if (id) {
@@ -62,30 +62,30 @@ export const JobForm = () => {
 
         if (jobToEdit) {
           setInitialValues({
-            title: jobToEdit.title || '',
-            company: jobToEdit.company || '',
-            location: jobToEdit.location || '',
-            type: jobToEdit.type as JobFormValues['type'],
-            salary: jobToEdit.salary || '',
-            description: jobToEdit.description || '',
+            title: jobToEdit.title || "",
+            company: jobToEdit.company || "",
+            location: jobToEdit.location || "",
+            type: jobToEdit.type as JobFormValues["type"],
+            salary: jobToEdit.salary || "",
+            description: jobToEdit.description || "",
             requirements: jobToEdit.requirements || [],
             responsibilities: jobToEdit.responsibilities || [],
             benefits: jobToEdit.benefits || [],
-            posted: jobToEdit.posted || '',
+            posted: jobToEdit.posted || "",
           });
         } else {
-          setFormError('Job not found.');
+          setFormError("Job not found.");
         }
         setFormLoading(false);
       }
     } else {
       setInitialValues({
-        title: '',
-        company: '',
-        location: '',
-        type: 'Full-time',
-        salary: '',
-        description: '',
+        title: "",
+        company: "",
+        location: "",
+        type: "Full-time",
+        salary: "",
+        description: "",
         requirements: [],
         responsibilities: [],
         benefits: [],
@@ -101,34 +101,34 @@ export const JobForm = () => {
         // Update existing job
         await updateJob(Number(id), values);
         toast({
-          title: 'Job Updated Successfully!',
-          description: 'The job posting has been updated.',
-          status: 'success',
+          title: "Job Updated Successfully!",
+          description: "The job posting has been updated.",
+          status: "success",
           duration: 5000,
           isClosable: true,
-          position: 'top-right',
+          position: "top-right",
         });
       } else {
         // Create new job
         await createJob(values);
         toast({
-          title: 'Job Created Successfully!',
-          description: 'The job posting has been created.',
-          status: 'success',
+          title: "Job Created Successfully!",
+          description: "The job posting has been created.",
+          status: "success",
           duration: 5000,
           isClosable: true,
-          position: 'top-right',
+          position: "top-right",
         });
       }
-      navigate('/hr/job-space');
+      navigate("/hr/job-space");
     } catch (error: any) {
       toast({
-        title: id ? 'Update Failed' : 'Creation Failed',
-        description: error.response?.data?.error || 'Failed to process job',
-        status: 'error',
+        title: id ? "Update Failed" : "Creation Failed",
+        description: error.response?.data?.error || "Failed to process job",
+        status: "error",
         duration: 5000,
         isClosable: true,
-        position: 'top-right',
+        position: "top-right",
       });
     }
   };
@@ -142,7 +142,7 @@ export const JobForm = () => {
   ) => {
     if (newItem.trim() && !currentArray.includes(newItem.trim())) {
       setFieldValue(fieldName, [...currentArray, newItem.trim()]);
-      setInput('');
+      setInput("");
     }
   };
 
@@ -161,7 +161,7 @@ export const JobForm = () => {
   if (formLoading) {
     return (
       <LoadingSpinner
-        message={id ? 'Loading job details...' : 'Preparing form...'}
+        message={id ? "Loading job details..." : "Preparing form..."}
       />
     );
   }
@@ -172,9 +172,9 @@ export const JobForm = () => {
         <Container maxW="4xl" py={8}>
           <ErrorAlert
             message={formError}
-            onRetry={() => navigate('/hr/job-space')}
+            onRetry={() => navigate("/hr/job-space")}
           />
-          <Button mt={4} onClick={() => navigate('/hr/job-space')}>
+          <Button mt={4} onClick={() => navigate("/hr/job-space")}>
             Back to Job Listings
           </Button>
         </Container>
@@ -189,13 +189,13 @@ export const JobForm = () => {
   return (
     <Box minH="100vh" bg="gray.50">
       <PageHeader
-        title={id ? 'Edit Job Posting' : 'Create New Job'}
+        title={id ? "Edit Job Posting" : "Create New Job"}
         subtitle={
           id
-            ? 'Update the details for this job'
-            : 'Fill out the form below to create a new job posting'
+            ? "Update the details for this job"
+            : "Fill out the form below to create a new job posting"
         }
-        backLink={{ to: '/hr/job-space', label: 'Back to Job Listings' }}
+        backLink={{ to: "/hr/job-space", label: "Back to Job Listings" }}
       />
 
       <Container maxW="4xl" py={8}>
@@ -309,13 +309,13 @@ export const JobForm = () => {
                         onChange={(e) => setRequirementInput(e.target.value)}
                         placeholder="Add a requirement (e.g., React, 5+ years experience)"
                         onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
+                          if (e.key === "Enter") {
                             e.preventDefault();
                             addArrayItem(
                               values.requirements,
                               requirementInput,
                               setFieldValue,
-                              'requirements',
+                              "requirements",
                               setRequirementInput
                             );
                           }
@@ -327,7 +327,7 @@ export const JobForm = () => {
                             values.requirements,
                             requirementInput,
                             setFieldValue,
-                            'requirements',
+                            "requirements",
                             setRequirementInput
                           )
                         }
@@ -348,7 +348,7 @@ export const JobForm = () => {
                                   values.requirements,
                                   req,
                                   setFieldValue,
-                                  'requirements'
+                                  "requirements"
                                 )
                               }
                             />
@@ -367,13 +367,13 @@ export const JobForm = () => {
                         onChange={(e) => setResponsibilityInput(e.target.value)}
                         placeholder="Add a responsibility"
                         onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
+                          if (e.key === "Enter") {
                             e.preventDefault();
                             addArrayItem(
                               values.responsibilities,
                               responsibilityInput,
                               setFieldValue,
-                              'responsibilities',
+                              "responsibilities",
                               setResponsibilityInput
                             );
                           }
@@ -385,7 +385,7 @@ export const JobForm = () => {
                             values.responsibilities,
                             responsibilityInput,
                             setFieldValue,
-                            'responsibilities',
+                            "responsibilities",
                             setResponsibilityInput
                           )
                         }
@@ -406,7 +406,7 @@ export const JobForm = () => {
                                   values.responsibilities,
                                   resp,
                                   setFieldValue,
-                                  'responsibilities'
+                                  "responsibilities"
                                 )
                               }
                             />
@@ -425,13 +425,13 @@ export const JobForm = () => {
                         onChange={(e) => setBenefitInput(e.target.value)}
                         placeholder="Add a benefit"
                         onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
+                          if (e.key === "Enter") {
                             e.preventDefault();
                             addArrayItem(
                               values.benefits,
                               benefitInput,
                               setFieldValue,
-                              'benefits',
+                              "benefits",
                               setBenefitInput
                             );
                           }
@@ -443,7 +443,7 @@ export const JobForm = () => {
                             values.benefits,
                             benefitInput,
                             setFieldValue,
-                            'benefits',
+                            "benefits",
                             setBenefitInput
                           )
                         }
@@ -464,7 +464,7 @@ export const JobForm = () => {
                                   values.benefits,
                                   benefit,
                                   setFieldValue,
-                                  'benefits'
+                                  "benefits"
                                 )
                               }
                             />
@@ -483,12 +483,12 @@ export const JobForm = () => {
                       isLoading={isSubmitting}
                       flex={1}
                     >
-                      {id ? 'Update Job' : 'Create Job'}
+                      {id ? "Update Job" : "Create Job"}
                     </Button>
                     <Button
                       variant="outline"
                       size="lg"
-                      onClick={() => navigate('/hr/job-space')}
+                      onClick={() => navigate("/hr/job-space")}
                       flex={1}
                     >
                       Cancel

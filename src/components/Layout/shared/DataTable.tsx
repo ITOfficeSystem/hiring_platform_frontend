@@ -15,8 +15,8 @@ import {
   Input,
   Select,
   Icon,
-} from '@chakra-ui/react';
-import { FaSearch } from 'react-icons/fa';
+} from "@chakra-ui/react";
+import { FaSearch } from "react-icons/fa";
 
 interface Column {
   key: string;
@@ -43,10 +43,11 @@ export const DataTable = ({
   filterValue,
   onFilterChange,
   filterOptions,
-  emptyMessage = 'No data found',
+  emptyMessage = "No data found",
 }: DataTableProps) => {
   return (
     <Box>
+      {/* Filters */}
       {(onSearchChange || onFilterChange) && (
         <HStack spacing={4} mb={6}>
           {onSearchChange && (
@@ -78,6 +79,7 @@ export const DataTable = ({
         </HStack>
       )}
 
+      {/* Table */}
       <TableContainer>
         <Table variant="simple">
           <Thead>
@@ -88,22 +90,30 @@ export const DataTable = ({
             </Tr>
           </Thead>
           <Tbody>
-            {data.map((row, index) => (
-              <Tr key={index}>
-                {columns.map((column) => (
-                  <Td key={column.key}>
-                    {column.render
-                      ? column.render(row[column.key], row)
-                      : row[column.key]}
-                  </Td>
-                ))}
+            {data && data.length > 0 ? (
+              data.map((row, index) => (
+                <Tr key={index}>
+                  {columns.map((column) => (
+                    <Td key={column.key}>
+                      {column.render
+                        ? column.render(row[column.key], row)
+                        : row[column.key]}
+                    </Td>
+                  ))}
+                </Tr>
+              ))
+            ) : (
+              <Tr>
+                <Td colSpan={columns.length} textAlign="center" py={8}>
+                  <Text color="gray.500">{emptyMessage}</Text>
+                </Td>
               </Tr>
-            ))}
+            )}
           </Tbody>
         </Table>
       </TableContainer>
 
-      {data.length === 0 && (
+      {data?.length === 0 && (
         <Box textAlign="center" py={8}>
           <Text color="gray.500">{emptyMessage}</Text>
         </Box>

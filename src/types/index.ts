@@ -16,23 +16,17 @@ export interface Application {
   id: string;
   name: string;
   email: string;
+  phone: string;
   cvLink: string;
   currentRound: // Updated currentRound types
-  | 'CV Screening'
-    | 'Aptitude Test'
-    | 'Technical Interview'
-    | 'HR Interview'
-    | 'Completed';
-  cvStatus: 'Pending' | 'Passed' | 'Failed';
-  aptitudeStatus: 'Pending' | 'Passed' | 'Failed'; // New aptitude status
-  techStatus: 'Pending' | 'Passed' | 'Failed'; // Now for offline tech interview
-  hrStatus: 'Pending' | 'Passed' | 'Failed';
-  overallStatus: 'In Progress' | 'Rejected' | 'Selected';
+  "CV Screening" | "Technical Interview" | "HR Interview" | "Completed";
+  cvStatus: "Pending" | "Passed" | "Failed";
+  techStatus: "Pending" | "Passed" | "Failed";
+  hrStatus: "Pending" | "Passed" | "Failed";
+  overallStatus: "In Progress" | "Rejected" | "Selected";
   jobId: number;
   createdAt: string;
   updatedAt: string;
-  interviewDate?: string; // Added for scheduling
-  interviewTime?: string; // Added for scheduling
 
   Job?: {
     title: string;
@@ -42,6 +36,13 @@ export interface Application {
     company: string;
     salary: string;
     posted: string;
+  };
+
+  aiScreenings?: {
+    createdAt: string;
+    decision: string;
+    feedback: string;
+    score: number;
   };
 }
 
@@ -58,7 +59,7 @@ export interface JobFormValues {
   title: string;
   company: string;
   location: string;
-  type: 'Full-time' | 'Part-time' | 'Contract' | 'Internship';
+  type: "Full-time" | "Part-time" | "Contract" | "Internship";
   salary: string;
   description: string;
   requirements: string[];
@@ -71,7 +72,7 @@ export interface Question {
   id: number;
   title: string;
   description: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
+  difficulty: "Easy" | "Medium" | "Hard";
   timeLimit: number;
   starterCode: string;
   testCases: Array<{

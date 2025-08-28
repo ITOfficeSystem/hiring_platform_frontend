@@ -4,11 +4,13 @@ import {
   VStack,
   Text,
   Button,
+  Card,
+  CardBody,
   Heading,
   useToast,
   HStack,
   Link as ChakraLink,
-  AlertDialog,
+  AlertDialog, // Import AlertDialog components
   AlertDialogBody,
   AlertDialogFooter,
   AlertDialogHeader,
@@ -19,11 +21,9 @@ import {
   MenuButton,
   Avatar,
   MenuList,
-  MenuItem,
-  useColorModeValue,
-  Flex,
+  MenuItem, // Import useDisclosure hook
 } from "@chakra-ui/react";
-import { useState, useRef } from "react";
+import { useState, useRef } from "react"; // Import useRef
 import { useNavigate, Link } from "react-router-dom";
 import { PageHeader } from "../shared/PageHeader";
 import { DataTable } from "../shared/DataTable";
@@ -35,7 +35,6 @@ import { ErrorAlert } from "../../ui/ErrorAlert";
 import { ActionButtons } from "../shared/ActionButtons";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useAuth } from "../../../hooks/useAuth";
-import { motion } from "framer-motion";
 
 export const JobSpace = () => {
   const navigate = useNavigate();
@@ -45,17 +44,11 @@ export const JobSpace = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
 
+  // For AlertDialog
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
   const [jobToDeleteId, setJobToDeleteId] = useState<number | null>(null);
   const [jobToDeleteTitle, setJobToDeleteTitle] = useState<string>("");
-
-  const bgColor = useColorModeValue("gray.50", "gray.900");
-  const cardBg = useColorModeValue("whiteAlpha.900", "gray.800");
-  const textColor = useColorModeValue("gray.800", "gray.200");
-  const subTextColor = useColorModeValue("gray.600", "gray.400");
-
-  const MotionBox = motion(Box);
 
   const handleDeleteJobClick = (jobId: number, jobTitle: string) => {
     setJobToDeleteId(jobId);
@@ -73,6 +66,7 @@ export const JobSpace = () => {
           status: "success",
           duration: 3000,
           position: "top-right",
+          isClosable: true,
         });
       } catch (error) {
         console.error("Failed to delete job:", error);
@@ -82,6 +76,7 @@ export const JobSpace = () => {
           status: "error",
           duration: 5000,
           position: "top-right",
+          isClosable: true,
         });
       } finally {
         onClose();
@@ -102,11 +97,12 @@ export const JobSpace = () => {
       status: "info",
       duration: 3000,
       position: "top-right",
+      isClosable: true,
     });
     navigate("/hr/login");
   };
 
-  const filteredJobs = jobs.filter((job) => {
+  const filteredJobs = jobs?.filter((job) => {
     const matchesSearch =
       job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -125,12 +121,12 @@ export const JobSpace = () => {
             as={Link}
             to={`/hr/dashboard?jobId=${row.id}`}
             fontWeight="medium"
-            color="blue.500"
+            color="blue.600"
             _hover={{ textDecoration: "underline" }}
           >
             {row.title}
           </ChakraLink>
-          <Text fontSize="sm" color={subTextColor}>
+          <Text fontSize="sm" color="gray.500">
             {row.company}
           </Text>
         </VStack>
@@ -152,7 +148,7 @@ export const JobSpace = () => {
       key: "salary",
       label: "Salary",
       render: (value: string) => (
-        <Text fontSize="sm" color={subTextColor}>
+        <Text fontSize="sm" color="gray.600">
           {value || "N/A"}
         </Text>
       ),
@@ -170,7 +166,7 @@ export const JobSpace = () => {
       render: (_: string, row: Job) => (
         <ActionButtons
           onEdit={() => handleEditJob(row.id)}
-          onDelete={() => handleDeleteJobClick(row.id, row.title)}
+          onDelete={() => handleDeleteJobClick(row.id, row.title)} // Use new handler
           showEdit={true}
           showDelete={true}
           showView={false}
@@ -192,17 +188,16 @@ export const JobSpace = () => {
       <MenuButton
         as={Button}
         variant="ghost"
-        px={4}
         rightIcon={<Avatar size="sm" name={user?.name} />}
       >
-        <Flex direction="column" align="start" mr={2}>
-          <Text fontSize="sm" fontWeight="medium" color={textColor}>
+        <VStack align="end" spacing={0}>
+          <Text fontSize="sm" fontWeight="medium">
             {user?.name}
           </Text>
-          <Text fontSize="xs" color={subTextColor}>
+          <Text fontSize="xs" color="gray.500">
             {user?.role}
           </Text>
-        </Flex>
+        </VStack>
       </MenuButton>
       <MenuList>
         <MenuItem icon={<FaSignOutAlt />} onClick={handleLogout}>
@@ -218,7 +213,7 @@ export const JobSpace = () => {
 
   if (error) {
     return (
-      <Box minH="100vh" bg={bgColor}>
+      <Box minH="100vh" bg="gray.50">
         <Container maxW="7xl" py={8}>
           <ErrorAlert
             message={error}
@@ -230,7 +225,7 @@ export const JobSpace = () => {
   }
 
   return (
-    <Box minH="100vh" bg={bgColor}>
+    <Box minH="100vh" bg="gray.50">
       <PageHeader
         title="Hire Me"
         subtitle="Manage job applications and candidates"
@@ -238,42 +233,37 @@ export const JobSpace = () => {
       />
 
       <Container maxW="7xl" py={8}>
-        <MotionBox
-          bg={cardBg}
-          borderRadius="2xl"
-          shadow="xl"
-          p={6}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <HStack justify="space-between" mb={6}>
-            <Heading size="md" color={textColor}>
-              Manage Jobs
-            </Heading>
-            <Button
-              colorScheme="blue"
-              size="sm"
-              onClick={() => navigate("/hr/jobs/create")}
-              borderRadius="xl"
-            >
-              Create Job
-            </Button>
-          </HStack>
-
-          <DataTable
-            data={filteredJobs}
-            columns={columns}
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            filterValue={typeFilter}
-            onFilterChange={setTypeFilter}
-            filterOptions={filterOptions}
-            emptyMessage="No job postings found matching your criteria."
-          />
-        </MotionBox>
+        <VStack spacing={8} align="stretch">
+          <Card>
+            <CardBody>
+              <HStack justify="space-between" align="center">
+                <Heading size="md">Manage Jobs</Heading>
+                <Button
+                  colorScheme="blue"
+                  onClick={() => navigate("/hr/jobs/create")}
+                  size="sm"
+                >
+                  Create Job
+                </Button>
+              </HStack>
+            </CardBody>
+            <CardBody>
+              <DataTable
+                data={filteredJobs}
+                columns={columns}
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                filterValue={typeFilter}
+                onFilterChange={setTypeFilter}
+                filterOptions={filterOptions}
+                emptyMessage="No job postings found matching your criteria."
+              />
+            </CardBody>
+          </Card>
+        </VStack>
       </Container>
 
+      {/* Delete Confirmation AlertDialog */}
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
@@ -284,6 +274,7 @@ export const JobSpace = () => {
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Delete Job Posting
             </AlertDialogHeader>
+
             <AlertDialogBody>
               Are you sure you want to delete the job posting for "
               <Text as="span" fontWeight="bold">
@@ -291,6 +282,7 @@ export const JobSpace = () => {
               </Text>
               "? This action cannot be undone.
             </AlertDialogBody>
+
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel

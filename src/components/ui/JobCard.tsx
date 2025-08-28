@@ -7,6 +7,8 @@ interface JobCardProps {
 }
 
 export const JobCard = ({ job }: JobCardProps) => {
+
+  console.log(job);
   return (
     <Box
       p={6}

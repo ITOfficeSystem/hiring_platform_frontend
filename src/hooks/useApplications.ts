@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from 'react';
-import { useToast } from '@chakra-ui/react';
-import { applicationService } from '../services/applicationService'; // Use applicationService
-import type { Application } from '../types';
+import { useState, useEffect } from "react";
+import { useToast } from "@chakra-ui/react";
+import { applicationService } from "../services/applicationService"; // Use applicationService
+import type { Application } from "../types";
 
 export const useApplications = () => {
   const [applications, setApplications] = useState<Application[]>([]);
@@ -18,14 +18,15 @@ export const useApplications = () => {
       setApplications(data);
     } catch (err: any) {
       const errorMessage =
-        err.response?.data?.message || 'Failed to fetch applications';
+        err.response?.data?.message || "Failed to fetch applications";
       setError(errorMessage);
       toast({
-        title: 'Error',
+        title: "Error",
         description: errorMessage,
-        status: 'error',
+        status: "error",
         duration: 5000,
-        position: 'top-right',
+        position: "top-right",
+        isClosable: true,
       });
     } finally {
       setLoading(false);
@@ -37,10 +38,10 @@ export const useApplications = () => {
     statusType: keyof Application,
     newValue: string,
     newRound?:
-      | 'CV Screening'
-      | 'Technical Interview'
-      | 'HR Interview'
-      | 'Completed'
+      | "CV Screening"
+      | "Technical Interview"
+      | "HR Interview"
+      | "Completed"
   ) => {
     try {
       const updatePayload: any = { [statusType]: newValue };
@@ -55,49 +56,21 @@ export const useApplications = () => {
       );
 
       toast({
-        title: 'Status Updated',
+        title: "Status Updated",
         description: `Successfully updated ${statusType} to ${newValue}`,
-        status: 'success',
+        status: "success",
         duration: 3000,
       });
     } catch (error: any) {
       toast({
-        title: 'Update Failed',
+        title: "Update Failed",
         description:
           error.response?.data?.message ||
-          'Failed to update application status',
-        status: 'error',
+          "Failed to update application status",
+        status: "error",
         duration: 5000,
-        position: 'top-right',
-      });
-      throw error;
-    }
-  };
-
-  const sendEmail = async (
-    applicationId: string,
-    emailType: string,
-    additionalData?: any
-  ) => {
-    try {
-      await applicationService.sendEmail(applicationId, {
-        // Use service function
-        emailType,
-        ...additionalData,
-      });
-
-      toast({
-        title: 'Email Sent!',
-        description: `${emailType.replace('_', ' ')} email sent successfully`,
-        status: 'success',
-        duration: 3000,
-      });
-    } catch (error: any) {
-      toast({
-        title: 'Email Failed',
-        description: error.response?.data?.message || 'Failed to send email',
-        status: 'error',
-        duration: 5000,
+        position: "top-right",
+        isClosable: true,
       });
       throw error;
     }
@@ -113,6 +86,5 @@ export const useApplications = () => {
     error,
     fetchApplications,
     updateApplicationStatus,
-    sendEmail,
   };
 };

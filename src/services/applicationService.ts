@@ -1,5 +1,6 @@
-import axiosInstance from '../api/axios';
-import type { Application } from '../types';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import axiosInstance from "../api/axios";
+import type { Application } from "../types";
 
 export const applicationService = {
   submitApplication: async (formData: FormData) => {
@@ -35,17 +36,24 @@ export const applicationService = {
     return response.data;
   },
 
-  sendEmail: async (
-    id: string,
-    emailData: {
-      emailType: string;
-      interviewDate?: string;
-      interviewTime?: string;
+  approveCVAndSchedule: async (applicationId: string) => {
+    const response = await axiosInstance.post(
+      `/api/candidates/${applicationId}/approve-and-schedule`
+    );
+    return response.data;
+  },
+
+  sendTechnicalAssessment: async (
+    applicationId: string,
+    data: {
+      interviewDate: string;
+      interviewTime: string;
+      instructions?: string;
     }
   ) => {
     const response = await axiosInstance.post(
-      `/api/candidates/${id}/send-email`,
-      emailData
+      `/api/candidates/${applicationId}/send-technical-assessment`,
+      data
     );
     return response.data;
   },
@@ -53,6 +61,48 @@ export const applicationService = {
   analyzeCv: async (id: string) => {
     const response = await axiosInstance.post(
       `/api/candidates/${id}/screen-cv`
+    );
+    return response.data;
+  },
+
+  saveAssessmentFormData: async (userData: {
+    name: string;
+    email: string;
+    phone: string;
+    roomCode: string;
+  }) => {
+    const response = await axiosInstance.post(
+      "/api/candidates/save-assessment-form",
+      userData
+    );
+    return response.data;
+  },
+
+  submitTechnicalAssessment: async (
+    candidateId: string,
+    assessmentData: {
+      answers: { [key: number]: string };
+      testResults: { [key: number]: any[] };
+      timeSpent: number;
+      completedAt: string;
+      userInfo: {
+        name: string;
+        email: string;
+        phone: string;
+        candidateId: string;
+      };
+    }
+  ) => {
+    const response = await axiosInstance.post(
+      `/api/candidates/${candidateId}/technical-assessment`,
+      assessmentData
+    );
+    return response.data;
+  },
+
+  getTechnicalAssessment: async (applicationId: string) => {
+    const response = await axiosInstance.get(
+      `/api/candidates/${applicationId}/technical-assessment`
     );
     return response.data;
   },

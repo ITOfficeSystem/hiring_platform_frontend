@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Box, Spinner, Text, VStack } from '@chakra-ui/react';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Box, Spinner, Text, VStack } from "@chakra-ui/react";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -12,14 +12,14 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   useEffect(() => {
     const checkAuth = () => {
-      const hrToken = localStorage.getItem('hrToken');
-      const hrUser = localStorage.getItem('hrUser');
+      const hrToken = localStorage.getItem("hrToken");
+      const hrUser = localStorage.getItem("hrUser");
 
       if (hrToken && hrUser) {
         setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
-        navigate('/hr/login');
+        navigate("/hr/login");
       }
     };
 

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { HStack, Button } from '@chakra-ui/react';
+import { HStack, Button } from "@chakra-ui/react";
 import {
   FaCheck,
   FaTimes,
@@ -8,7 +8,7 @@ import {
   FaEnvelope,
   FaTrash,
   FaEdit,
-} from 'react-icons/fa'; // Import FaEdit
+} from "react-icons/fa"; // Import FaEdit
 
 interface ActionButtonsProps {
   onView?: () => void;
