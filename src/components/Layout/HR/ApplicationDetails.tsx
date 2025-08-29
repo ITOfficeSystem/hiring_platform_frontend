@@ -187,6 +187,8 @@ export const ApplicationDetails = () => {
       return;
     }
 
+    console.log("test");
+
     try {
       setSendingAssessment(true);
 
